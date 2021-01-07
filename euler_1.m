@@ -14,7 +14,7 @@ function [x, yaus] = euler_1(ableitung, startvektor_y, xstart, xend, step)
 
 %% Initialisierung
 %Schrittweite
-h=(xend-xstart)/(step-1);
+h=(xend-xstart)/(step);
 
 %Diskreter x-Vektor
 x= linspace(xstart,xend,step);
