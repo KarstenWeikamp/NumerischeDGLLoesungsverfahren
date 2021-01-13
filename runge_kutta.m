@@ -13,31 +13,29 @@ function [x, yaus] = runge_kutta(ableitung, startvektor_y, xstart, xend, step)
 %     y               Werte der gesuchten Funktion
 
 %% Initialisierung
-%Schrittweite
-h=(xend-xstart)/(step);
 
 %Diskreter x-Vektor
-x= linspace(xstart,xend,step);
-y= {};
+x= linspace(xstart,xend,step+1);
+h=0.25;
+y= zeros(2,length(x));
 yaus=startvektor_y(1);
-y{1}=startvektor_y;
+y(1,1)=startvektor_y(1);
+y(2,1)=startvektor_y(2);
 
-
-for i=2:step
-    k1{i-1}=h*f_symb(ableitung,x(i-1),y{i-1});
-    k2{i-1}=h*f_symb(ableitung,x(i-1)+0.5*h,y{i-1}+0.5*k1{i-1});
-    k3{i-1}=h*f_symb(ableitung,x(i-1)+0.5*h,y{i-1}+0.5*k2{i-1});
-    k4{i-1}=h*f_symb(ableitung,x(i-1)+h,y{i-1}+k2{i-1});
-    y{i}=y{i-1}+(1/6)*(k1{i-1}+2*k2{i-1}+2*k3{i-1}+k4{i-1});
-    c = y{i};
-    yaus(i)=c(1);
+for i=1:step
+    k1=h*f_symb(ableitung,x(i),y(:,i));
+    k2=h*f_symb(ableitung,x(i)+0.5*h,y(:,i)+0.5*k1);
+    k3=h*f_symb(ableitung,x(i)+0.5*h,y(:,i)+0.5*k2);
+    k4=h*f_symb(ableitung,x(i)+h,y(:,i)+k3);
+    y(:,i+1)=y(:,i)+(1/6)*(k1+2*k2+2*k3+k4);
+    yaus(i+1)=y(1,i+1);
     
     
     %Ausgabe
-    if(i<=5)
-        fprintf("=== Schritt %i ===\n",i)
-        fprintf("x = %1.02f \n",x(i))
-        fprintf("y1 = %1.02f \n", c(1))
-        fprintf("y2 = %1.02f \n", c(2))
+    if(i<=4)
+        fprintf("=== Schritt %i ===\n",i+1)
+        fprintf("x = %1.02f \n",x(i+1))
+        fprintf("y1 = %1.02f \n", y(1,i+1))
+        fprintf("y2 = %1.02f \n", y(2,i+1))
     end
 end  

@@ -13,27 +13,26 @@ function [x, yaus] = euler_1(ableitung, startvektor_y, xstart, xend, step)
 %     y               Werte der gesuchten Funktion
 
 %% Initialisierung
-%Schrittweite
-h=(xend-xstart)/(step);
 
 %Diskreter x-Vektor
-x= linspace(xstart,xend,step);
-y= {};
+x= linspace(xstart,xend,step+1);
+h=diff(x);
+y= zeros(2,length(x));
 yaus=startvektor_y(1);
-y{1}=startvektor_y;
+y(1,1)=startvektor_y(1);
+y(2,1)=startvektor_y(2);
 
 %% Rekursion
-for i = 2:step
-    y{i}=y{i-1}+h*f_symb(ableitung,x(i-1),y{i-1});
-    c = y{i};
-    yaus(i)=c(1);
+for i = 1:step
+    y(:,i+1)=y(:,i)+h(i)*f_symb(ableitung,x(i),y(:,i));
+    yaus(i+1)=y(1,i+1);
     
     
     %Ausgabe
     if(i<=5)
-        fprintf("=== Schritt %i ===\n",i)
-        fprintf("x = %1.02f \n",x(i))
-        fprintf("y1 = %1.02f \n", c(1))
-        fprintf("y2 = %1.02f \n", c(2))
+        fprintf("=== Schritt %i ===\n",i+1)
+        fprintf("x = %1.02f \n",x(i+1))
+        fprintf("y1 = %1.02f \n", y(1,i+1))
+        fprintf("y2 = %1.02f \n", y(2,i+1))
     end
 end  

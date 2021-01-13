@@ -2,7 +2,7 @@
 
 xstart= 0;
 xend=10;
-schritte=50;
+schritte=100;
 
 syms x y
 dgl = {'@(x,y) y(2)';'@(x,y) -2*y(2)-y(1)'};
